@@ -166,6 +166,64 @@
     margin-top: 2px;
 }
 
+@media (hover: hover) and (pointer: fine) {
+    .dashboard .staff-card:hover {
+        border-color: #9bc9c3;
+        box-shadow: 0 8px 24px rgb(20 43 69 / 9%);
+    }
+
+    .appointment-row:hover,
+    .staff-tool-list li:hover {
+        background: var(--teal-light);
+    }
+
+    .staff-tool-list a:hover {
+        color: var(--teal-dark);
+    }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .dashboard .staff-card,
+    .dashboard .staff-menu-toggle,
+    .dashboard select {
+        transition: transform 180ms ease, box-shadow 180ms ease,
+            border-color 180ms ease, background-color 180ms ease;
+    }
+
+    .dashboard .staff-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .dashboard-metrics .staff-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .appointment-row,
+    .staff-tool-list li {
+        transition: background-color 180ms ease;
+    }
+
+    .appointment-row > *,
+    .staff-tool-list li > * {
+        transition: transform 180ms ease;
+    }
+
+    .appointment-row:hover > *,
+    .staff-tool-list li:hover > * {
+        transform: translateX(4px);
+    }
+
+    .dashboard .staff-menu-toggle:hover,
+    .dashboard select:hover {
+        transform: translateY(-2px);
+    }
+
+    .dashboard .staff-menu-toggle:active,
+    .dashboard select:active {
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 1040px) {
     .dashboard-grid {
         grid-template-columns: 1fr;

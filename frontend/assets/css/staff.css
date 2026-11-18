@@ -125,6 +125,54 @@
     outline-offset: -3px;
 }
 
+@media (hover: hover) and (pointer: fine) {
+    .staff-main:not(.dashboard) .staff-card:hover {
+        border-inline-color: #9bc9c3;
+        border-block-end-color: #9bc9c3;
+        box-shadow: 0 8px 24px rgb(20 43 69 / 9%);
+    }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .staff-nav a,
+    .staff-sidebar > button,
+    .staff-main:not(.dashboard) .staff-card,
+    .staff-page :is(.staff-main:not(.dashboard), dialog) :is(button, input, select, textarea):enabled {
+        transition: transform 180ms ease, box-shadow 180ms ease,
+            border-color 180ms ease, background-color 180ms ease;
+    }
+
+    .staff-nav a:hover {
+        transform: translateX(4px);
+    }
+
+    .staff-main:not(.dashboard) .staff-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .staff-sidebar > button:hover,
+    .staff-page :is(.staff-main:not(.dashboard), dialog) :is(button, input, select, textarea):enabled:hover {
+        transform: translateY(-2px);
+    }
+
+    .staff-nav a:active {
+        transform: translateX(2px);
+    }
+
+    .staff-sidebar > button:active,
+    .staff-page :is(.staff-main:not(.dashboard), dialog) :is(button, input, select, textarea):enabled:active {
+        transform: translateY(0);
+    }
+
+    :is(.department-details, .module-details) > div > * {
+        transition: transform 180ms ease;
+    }
+
+    :is(.department-details, .module-details) > div:hover > * {
+        transform: translateX(3px);
+    }
+}
+
 @media (max-width: 760px) {
     .staff-layout {
         display: block;
