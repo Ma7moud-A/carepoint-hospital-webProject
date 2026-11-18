@@ -102,6 +102,17 @@
     color: var(--muted);
 }
 
+.doctor-grid[hidden] { display: none; }
+
+.directory-retry:not([hidden]) {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    color: var(--teal-dark);
+    font-weight: bold;
+    text-underline-offset: 3px;
+}
+
 .doctor-card {
     transition: transform 180ms ease, border-color 180ms ease,
         box-shadow 180ms ease;

@@ -186,15 +186,17 @@ cancelDelete.addEventListener("click", () => deletion.close());
 
 function updateDepartmentRole() {
     updateStaffNavigation(departmentRole.value, "departments");
+    const allowed = departmentRole.value !== "doctor";
+    document.querySelector("#department-directory").hidden = !allowed;
+    document.querySelector("#department-unavailable").hidden = allowed;
     feedback.textContent = "";
     renderDepartments();
 }
 
-departmentRole.value = getStaffPreviewRole(["administrator", "receptionist"]);
+departmentRole.value = getStaffPreviewRole();
 departmentRole.addEventListener("change", updateDepartmentRole);
 updateDepartmentRole();
 document.querySelector("#department-role-field").hidden = false;
-document.querySelector("#department-directory").hidden = false;
 if (!staffStorageAvailable) {
     document.querySelector("#department-preview-note").textContent = "Fictional data. This browser keeps sample edits on this page only.";
 }

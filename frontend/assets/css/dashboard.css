@@ -33,6 +33,20 @@
     font-size: 0.9rem;
 }
 
+.dashboard-preview-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+}
+
+#dashboard-reset-feedback:not(:empty) { margin-top: 8px; }
+
+.dashboard-side { display: grid; gap: 16px; min-width: 0; }
+.weather-caption, .weather-field, #weather-status, #weather-retry { margin-top: 8px; }
+#weather-status { font-weight: bold; }
+
 .dashboard-metrics:not([hidden]) {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));

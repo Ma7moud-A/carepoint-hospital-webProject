@@ -9,12 +9,10 @@ for the SWER353 Web Technologies course at Bethlehem University.
 
 ## Project status
 
-The public homepage includes a fictional doctors directory with name and
-specialty filters. The Staff Login frontend preview checks sample input in the
-browser. The staff dashboard previews three roles with a fictional appointment
-schedule. The Departments preview supports search and temporary administrator
-edits. Doctors is the next frontend page. PHP authentication, database
-integration, and deployment are planned.
+The frontend previews are complete. They cover the public doctors directory,
+Staff Login, the role-specific dashboard, Departments, Doctors, Patients,
+Appointments, Medical Records, and User Management. PHP sessions, server-side
+role checks, database integration, live API calls, and deployment are next.
 
 ## Main features
 
@@ -62,10 +60,21 @@ PHP will enforce these permissions on the server.
 4. Open `frontend/dashboard.html` directly or launch it with Live Server. Use
    **Preview role** to switch between Administrator, Receptionist, and Doctor.
    Use **Status** to filter that role's sample appointment schedule.
-5. Choose **Departments** from the dashboard in the Administrator or
-   Receptionist preview. Search the sample departments or switch to
-   Administrator to practice adding, editing, and deleting. Reload to restore
-   the sample records.
+5. Use the staff menu to open each module. Staff pages share fictional edits
+   within a browser tab using session storage. From the dashboard, use **Reset
+   sample data** to restore the original records. Staff Login and the public
+   directory are independent of the sample staff data.
+
+### Frontend checklist
+
+| Preview | Try this |
+| --- | --- |
+| Departments and Doctors | Add a department, assign a new doctor to it, and check the assigned-doctor count. Search by name or ID and filter doctors by specialty and department. |
+| Patients | Register a fictional patient as Receptionist, then search for the profile. Check that Doctor only sees patients from assigned visits. |
+| Appointments | Schedule a visit for the new patient, change its status, and try the date, doctor, and status filters. |
+| Medical Records | Create a record for that visit. Open the record again, edit it, and search by appointment ID. Check that a visit already linked to a record cannot be deleted. |
+| User Management | As Administrator, add a fictional account, assign a role, change its active state, and try the password reset confirmation. The preview uses no passwords. |
+| API states | Use the dashboard weather widget's state selector. Open `frontend/index.html?directory-preview=loading#our-doctors` or `frontend/index.html?directory-preview=error#our-doctors` to see public directory states and return to the sample list. |
 
 The preview can run locally without PHP or MySQL.
 

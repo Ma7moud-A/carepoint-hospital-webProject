@@ -47,6 +47,7 @@
                     <select id="department-role" aria-describedby="department-preview-note">
                         <option value="administrator">Administrator</option>
                         <option value="receptionist">Receptionist</option>
+                        <option value="doctor">Doctor</option>
                     </select>
                 </div>
             </div>
@@ -54,6 +55,10 @@
                 Fictional data. Sample edits are shared across staff pages in this tab.
             </p>
             <noscript><p class="department-preview-note">Enable JavaScript to browse the sample departments.</p></noscript>
+            <section class="staff-card" id="department-unavailable" hidden>
+                <h2>This page is unavailable for the selected role</h2>
+                <p>Choose another preview role or return to the dashboard.</p>
+            </section>
 
             <section id="department-directory" aria-labelledby="department-directory-title" hidden>
                 <div class="staff-card department-toolbar">

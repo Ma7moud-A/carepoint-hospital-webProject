@@ -69,5 +69,21 @@ resetButton.addEventListener("click", () => {
     searchInput.focus();
 });
 
-filterDoctors();
-controls.hidden = false;
+// Preview the directory states before the read-only API is connected.
+const directoryPreview = new URLSearchParams(location.search).get("directory-preview");
+const directoryGrid = document.querySelector("#doctor-grid");
+const directoryRetry = document.querySelector("#directory-retry");
+
+if (directoryPreview === "loading") {
+    directoryGrid.hidden = true;
+    status.textContent = "Loading doctors…";
+    directoryRetry.hidden = false;
+    directoryRetry.textContent = "Return to sample directory";
+} else if (directoryPreview === "error") {
+    directoryGrid.hidden = true;
+    status.textContent = "The doctors directory is temporarily unavailable.";
+    directoryRetry.hidden = false;
+} else {
+    filterDoctors();
+    controls.hidden = false;
+}
