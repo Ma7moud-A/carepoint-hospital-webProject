@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse the CarePoint Hospital doctors directory.">
+    <title>CarePoint Hospital | Our Doctors</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/home.css">
+    <script src="assets/js/home.js" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="index.html">
+                <span class="brand-mark" aria-hidden="true">+</span>
+                <span>CarePoint Hospital</span>
+            </a>
+
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="#our-doctors">Our Doctors</a>
+                <a href="login.html">Staff Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="container hero-inner">
+                <p class="eyebrow">CarePoint Hospital</p>
+                <h1 id="hero-title">Find a doctor by specialty</h1>
+                <p class="hero-description">
+                    Explore our doctors and find their specialties and hospital locations.
+                </p>
+                <a class="button browse-button" href="#our-doctors">
+                    Browse Doctors <span aria-hidden="true">↓</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="directory container" id="our-doctors"
+                 aria-labelledby="directory-title">
+            <h2 id="directory-title">Our Doctors</h2>
+
+            <!-- JavaScript reveals these controls when filtering is ready. -->
+            <div class="directory-controls" id="directory-controls" hidden>
+                <div class="filter-field">
+                    <label for="doctor-search">Search by name</label>
+                    <input type="search" id="doctor-search"
+                           placeholder="e.g. Ahmad Khalil" autocomplete="off">
+                </div>
+
+                <div class="filter-field">
+                    <label for="doctor-specialty">Specialty</label>
+                    <select id="doctor-specialty">
+                        <option value="">All specialties</option>
+                    </select>
+                </div>
+
+                <button class="reset-button" id="reset-filters" type="button">
+                    Clear filters
+                </button>
+            </div>
+
+            <p class="directory-status" id="directory-status"
+               role="status" aria-atomic="true"></p>
+
+            <ul class="doctor-grid" id="doctor-grid">
+                <li class="doctor-card">
+                    <span class="doctor-avatar" aria-hidden="true">AK</span>
+                    <h3>Dr. Ahmad Khalil</h3>
+                    <p class="doctor-specialty">Cardiology</p>
+                    <p class="doctor-location">Building A · Floor 2</p>
+                </li>
+                <li class="doctor-card">
+                    <span class="doctor-avatar" aria-hidden="true">SO</span>
+                    <h3>Dr. Sami Odeh</h3>
+                    <p class="doctor-specialty">Dermatology</p>
+                    <p class="doctor-location">Building A · Floor 1</p>
+                </li>
+                <li class="doctor-card">
+                    <span class="doctor-avatar" aria-hidden="true">MY</span>
+                    <h3>Dr. Maha Yousef</h3>
+                    <p class="doctor-specialty">Pediatrics</p>
+                    <p class="doctor-location">Building B · Floor 1</p>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <strong>CarePoint Hospital</strong>
+            <span>SWER353 Web Technologies course project</span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,174 @@
+/* Homepage layout and pointer glow */
+.hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle 270px at var(--pointer-x, 70%) var(--pointer-y, 50%),
+        rgb(13 148 136 / 22%),
+        transparent
+    );
+    opacity: 0;
+    pointer-events: none;
+    content: "";
+}
+
+.hero-inner {
+    position: relative;
+    animation: hero-enter 450ms ease-out both;
+}
+
+@keyframes hero-enter {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.browse-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.browse-button,
+.reset-button {
+    transition: transform 160ms ease, background-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.browse-button:active,
+.reset-button:active {
+    transform: translateY(1px);
+}
+
+#our-doctors {
+    scroll-margin-top: 20px;
+}
+
+/* Directory filters */
+.directory-controls:not([hidden]) {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 14px;
+    margin-top: 18px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    background: var(--white);
+}
+
+.filter-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.filter-field input,
+.filter-field select,
+.reset-button {
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #8999aa;
+    border-radius: var(--control-radius);
+    background: var(--white);
+    color: var(--navy);
+    font: inherit;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+}
+
+.reset-button {
+    color: var(--teal-dark);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.directory-status:not(:empty) {
+    margin-top: 14px;
+    color: var(--muted);
+}
+
+.doctor-card {
+    transition: transform 180ms ease, border-color 180ms ease,
+        box-shadow 180ms ease;
+}
+
+@media (hover: hover) {
+    .browse-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgb(20 43 69 / 16%);
+    }
+
+    .browse-button:active {
+        transform: translateY(1px);
+    }
+
+    .reset-button:hover {
+        background: var(--teal-light);
+    }
+
+    .doctor-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--teal);
+        box-shadow: 0 10px 24px rgb(20 43 69 / 10%);
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .hero::before {
+        transition: opacity 220ms ease;
+    }
+
+    .hero:hover::before {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+@media (max-width: 640px) {
+    .directory-controls:not([hidden]) {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-inner {
+        animation: none;
+    }
+
+    .hero::before {
+        display: none;
+    }
+
+    .browse-button,
+    .reset-button,
+    .doctor-card {
+        transition: none;
+    }
+
+    .browse-button:hover,
+    .browse-button:active,
+    .reset-button:active,
+    .doctor-card:hover {
+        transform: none;
+    }
+}

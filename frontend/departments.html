@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Preview the CarePoint Hospital staff department directory.">
+    <title>Departments | CarePoint Hospital</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/staff.css">
+    <link rel="stylesheet" href="assets/css/departments.css">
+    <script src="assets/js/staff.js" defer></script>
+    <script src="assets/js/staff-data.js" defer></script>
+    <script src="assets/js/departments.js" defer></script>
+</head>
+<body class="staff-page">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="staff-shell staff-header">
+            <a class="brand" href="index.html">
+                <span class="brand-mark" aria-hidden="true">+</span>
+                <span>CarePoint Hospital</span>
+            </a>
+            <a class="staff-public-link" href="index.html"><span aria-hidden="true">←</span> Back to public site</a>
+        </div>
+    </header>
+
+    <div class="staff-shell staff-layout">
+        <aside class="staff-sidebar">
+            <button class="staff-menu-toggle" id="staff-menu-toggle" type="button"
+                    aria-expanded="false" aria-controls="staff-nav" hidden>Staff menu</button>
+            <nav class="staff-nav" id="staff-nav" aria-label="Staff preview">
+                <p class="staff-nav-title">Staff workspace</p>
+                <a href="dashboard.html">Dashboard</a>
+            </nav>
+        </aside>
+
+        <main class="staff-main" id="main-content" tabindex="-1">
+            <div class="department-intro">
+                <div>
+                    <p class="eyebrow">Staff frontend preview</p>
+                    <h1>Departments</h1>
+                    <p>Find department locations, phone numbers, and assigned doctor counts.</p>
+                </div>
+                <div class="staff-field" id="department-role-field" hidden>
+                    <label for="department-role">Preview role</label>
+                    <select id="department-role" aria-describedby="department-preview-note">
+                        <option value="administrator">Administrator</option>
+                        <option value="receptionist">Receptionist</option>
+                    </select>
+                </div>
+            </div>
+            <p class="department-preview-note" id="department-preview-note">
+                Fictional data. Sample edits are shared across staff pages in this tab.
+            </p>
+            <noscript><p class="department-preview-note">Enable JavaScript to browse the sample departments.</p></noscript>
+
+            <section id="department-directory" aria-labelledby="department-directory-title" hidden>
+                <div class="staff-card department-toolbar">
+                    <div class="department-toolbar-heading">
+                        <h2 id="department-directory-title">Department directory</h2>
+                        <button type="button" class="button department-button" id="department-add">Add department</button>
+                    </div>
+                    <div class="department-search-controls">
+                        <div class="staff-field">
+                            <label for="department-search">Search departments</label>
+                            <input type="search" id="department-search" placeholder="Name, location, phone, or ID" autocomplete="off">
+                        </div>
+                        <button type="button" class="department-button department-secondary" id="department-clear" disabled>Clear search</button>
+                    </div>
+                </div>
+
+                <p class="department-feedback" id="department-feedback" role="status" aria-atomic="true"></p>
+                <p class="department-results" id="department-results" role="status" aria-atomic="true"></p>
+                <ul class="department-grid" id="department-list" role="list" aria-label="Departments"></ul>
+            </section>
+        </main>
+    </div>
+
+    <template id="department-card-template">
+        <li class="staff-card department-card">
+            <div class="department-card-main">
+                <p class="department-id"></p>
+                <h3 tabindex="-1"></h3>
+                <dl class="department-details">
+                    <div><dt>Location</dt><dd class="department-location"></dd></div>
+                    <div><dt>Phone</dt><dd class="department-phone"></dd></div>
+                    <div><dt>Assigned doctors</dt><dd class="department-doctors"></dd></div>
+                </dl>
+            </div>
+            <div class="department-actions">
+                <button type="button" class="department-button department-secondary department-edit">Edit</button>
+                <button type="button" class="department-button department-secondary department-delete">Delete</button>
+            </div>
+        </li>
+    </template>
+
+    <dialog class="department-dialog" id="department-editor" aria-labelledby="department-editor-title">
+        <form id="department-form" method="dialog" novalidate>
+            <h2 id="department-editor-title">Add department</h2>
+            <div class="staff-field">
+                <label for="department-name">Department name</label>
+                <input type="text" id="department-name" maxlength="100" required autofocus aria-describedby="department-name-error">
+                <p class="department-error" id="department-name-error" role="alert"></p>
+            </div>
+            <div class="staff-field">
+                <label for="department-location">Location <span>(optional)</span></label>
+                <input type="text" id="department-location" maxlength="100" placeholder="e.g. Building A - Floor 2">
+            </div>
+            <div class="staff-field">
+                <label for="department-phone">Phone <span>(optional)</span></label>
+                <input type="tel" id="department-phone" maxlength="25">
+            </div>
+            <div class="department-dialog-actions">
+                <button type="button" class="department-button department-secondary" id="department-cancel-edit">Cancel</button>
+                <button type="submit" class="button department-button" id="department-save">Add department</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog class="department-dialog" id="department-deletion" aria-labelledby="department-deletion-title"
+            aria-describedby="department-deletion-description">
+        <h2 id="department-deletion-title">Delete department</h2>
+        <p id="department-deletion-description"></p>
+        <div class="department-dialog-actions">
+            <button type="button" class="department-button department-secondary" id="department-cancel-delete" autofocus>Cancel</button>
+            <button type="button" class="department-button department-danger" id="department-confirm-delete">Delete department</button>
+        </div>
+    </dialog>
+</body>
+</html>

@@ -1,0 +1,142 @@
+/* Shared shell and controls for staff pages. */
+.staff-shell {
+    max-width: 1440px;
+    margin-inline: auto;
+}
+
+.staff-header {
+    display: flex;
+    min-height: 72px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    padding: 12px clamp(16px, 3vw, 40px);
+}
+
+.staff-public-link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.92rem;
+    text-underline-offset: 4px;
+}
+
+.staff-public-link:hover {
+    color: #b5eee7;
+}
+
+.staff-layout {
+    display: grid;
+    min-height: calc(100vh - 72px);
+    grid-template-columns: 222px minmax(0, 1fr);
+}
+
+.staff-sidebar {
+    padding: 28px 16px;
+    border-inline-end: 1px solid var(--border);
+    background: var(--white);
+}
+
+.staff-nav-title {
+    margin: 0 12px 8px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.staff-nav a:not([hidden]) {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: var(--control-radius);
+    text-decoration: none;
+}
+
+.staff-nav a + a {
+    margin-top: 4px;
+}
+
+.staff-nav a:hover,
+.staff-nav a:active,
+.staff-menu-toggle:hover,
+.staff-menu-toggle:active {
+    background: var(--teal-light);
+    color: var(--teal-dark);
+}
+
+.staff-nav a[aria-current="page"] {
+    background: var(--teal-light);
+    color: var(--teal-dark);
+    box-shadow: inset 3px 0 var(--teal);
+    font-weight: bold;
+}
+
+.staff-menu-toggle,
+.staff-field select {
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid #8999aa;
+    border-radius: var(--control-radius);
+    background: var(--white);
+    color: var(--navy);
+    font: inherit;
+}
+
+.staff-menu-toggle {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.staff-main {
+    min-width: 0;
+    padding: clamp(20px, 3.5vw, 48px) clamp(16px, 3.5vw, 48px);
+}
+
+.staff-card {
+    min-width: 0;
+    padding: clamp(16px, 2vw, 26px);
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    background: var(--white);
+}
+
+.staff-field label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.staff-field select {
+    width: 100%;
+    cursor: pointer;
+}
+
+.staff-field select:hover {
+    border-color: var(--teal-dark);
+}
+
+.staff-main:focus-visible,
+.staff-card:focus-visible {
+    outline: 3px solid var(--teal-dark);
+    outline-offset: -3px;
+}
+
+@media (max-width: 760px) {
+    .staff-layout {
+        display: block;
+    }
+
+    .staff-sidebar {
+        padding: 12px 16px;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .staff-menu-toggle:not([hidden]) + .staff-nav:not([hidden]) {
+        margin-top: 12px;
+    }
+}

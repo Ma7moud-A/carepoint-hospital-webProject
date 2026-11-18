@@ -1,0 +1,182 @@
+.dashboard-heading,
+.dashboard-panel-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px 24px;
+}
+
+.dashboard-heading h1 {
+    margin-block: 5px 8px;
+    font-size: clamp(2rem, 4.2vw, 3.25rem);
+    line-height: 1.05;
+}
+
+.dashboard-description,
+.dashboard-panel-heading p,
+.appointment-count {
+    color: var(--muted);
+}
+
+.dashboard-heading select,
+.dashboard-panel-heading select {
+    min-width: 142px;
+}
+
+.dashboard-note {
+    margin-top: 18px;
+    padding: 10px 14px;
+    border-inline-start: 3px solid var(--teal);
+    border-radius: 0 var(--control-radius) var(--control-radius) 0;
+    background: var(--teal-light);
+    font-size: 0.9rem;
+}
+
+.dashboard-metrics:not([hidden]) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 20px 0 0;
+}
+
+.dashboard-metrics .staff-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-metrics dt {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.dashboard-metrics dd {
+    margin: auto 0 0;
+    padding-top: 6px;
+    color: var(--teal-dark);
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(235px, 0.52fr);
+    align-items: start;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.dashboard-grid h2 {
+    font-size: 1.3rem;
+    line-height: 1.2;
+}
+
+.dashboard-panel-heading {
+    align-items: start;
+}
+
+.dashboard-panel-heading p {
+    margin-top: 4px;
+    font-size: 0.9rem;
+}
+
+.appointment-count:not(:empty) {
+    margin-top: 18px;
+    font-size: 0.9rem;
+}
+
+.appointment-list,
+.staff-tool-list {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.appointment-row,
+.staff-tool-list li {
+    padding-block: 12px;
+    border-top: 1px solid var(--border);
+}
+
+.appointment-row:last-child,
+.staff-tool-list li:last-child {
+    padding-bottom: 0;
+}
+
+.appointment-row {
+    display: grid;
+    grid-template-columns: 68px minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 12px;
+}
+
+.appointment-time {
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.appointment-doctor,
+.staff-tool-list p {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.appointment-badge {
+    justify-self: start;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #e8eff8;
+    color: #294769;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.appointment-badge[data-status="Completed"] {
+    background: var(--teal-light);
+    color: var(--teal-dark);
+}
+
+.appointment-badge[data-status="Cancelled"] {
+    background: #fbeae8;
+    color: #8a3634;
+}
+
+.staff-tool-list h3 {
+    font-size: 0.98rem;
+}
+
+.staff-tool-list p {
+    margin-top: 2px;
+}
+
+@media (max-width: 1040px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 460px) {
+    .dashboard-metrics:not([hidden]) {
+        gap: 8px;
+    }
+
+    .dashboard-metrics .staff-card {
+        padding: 10px 8px;
+    }
+
+    .dashboard-metrics dt {
+        font-size: 0.8rem;
+    }
+
+    .appointment-row {
+        grid-template-columns: 68px minmax(0, 1fr);
+        row-gap: 6px;
+    }
+
+    .appointment-badge {
+        grid-column: 2;
+    }
+}

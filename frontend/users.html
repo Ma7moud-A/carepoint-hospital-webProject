@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management | CarePoint Hospital</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/staff.css">
+    <link rel="stylesheet" href="assets/css/staff-modules.css">
+    <script src="assets/js/staff.js" defer></script>
+    <script src="assets/js/staff-data.js" defer></script>
+    <script src="assets/js/staff-module-config.js" defer></script>
+    <script src="assets/js/staff-modules.js" defer></script>
+</head>
+<body class="staff-page" data-module="users">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+        <div class="staff-shell staff-header">
+            <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">+</span> CarePoint Hospital</a>
+            <a class="staff-public-link" href="index.html"><span aria-hidden="true">←</span> Back to public site</a>
+        </div>
+    </header>
+    <div class="staff-shell staff-layout">
+        <aside class="staff-sidebar">
+            <button class="staff-menu-toggle" id="staff-menu-toggle" type="button" aria-expanded="false"
+                    aria-controls="staff-nav" hidden>Staff menu</button>
+            <nav class="staff-nav" id="staff-nav" aria-label="Staff preview">
+                <p class="staff-nav-title">Staff workspace</p>
+                <a href="dashboard.html">Dashboard</a>
+            </nav>
+        </aside>
+        <main class="staff-main" id="main-content" tabindex="-1">
+            <div class="module-intro">
+                <div>
+                    <p class="eyebrow">Staff frontend preview</p>
+                    <h1>User Management</h1>
+                    <p>Review sample staff accounts, roles, and account status.</p>
+                </div>
+                <div class="staff-field" id="module-role-field" hidden>
+                    <label for="module-role">Preview role</label>
+                    <select id="module-role" aria-describedby="module-preview-note">
+                        <option value="administrator">Administrator</option>
+                        <option value="receptionist">Receptionist</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+            </div>
+            <p class="module-note" id="module-preview-note">Use fictional information. Sample edits are shared across staff pages in this tab.</p>
+            <noscript><p class="module-note">Enable JavaScript to use this staff preview.</p></noscript>
+            <section class="staff-card module-unavailable" id="module-unavailable" hidden>
+                <h2>This page is unavailable for the selected role</h2>
+                <p>Choose another preview role or return to the dashboard.</p>
+            </section>
+            <section id="module-directory" aria-labelledby="module-directory-title" hidden>
+                <div class="staff-card module-toolbar">
+                    <div class="module-toolbar-heading">
+                        <h2 id="module-directory-title">Staff accounts</h2>
+                        <button type="button" class="button module-button" id="module-add">Add</button>
+                    </div>
+                    <div class="module-filters" id="module-filters"></div>
+                    <button type="button" class="module-button module-secondary" id="module-clear">Clear filters</button>
+                </div>
+                <p class="module-feedback" id="module-feedback" role="status" aria-atomic="true"></p>
+                <p class="module-results" id="module-results" role="status" aria-atomic="true"></p>
+                <ul class="module-grid" id="module-list" role="list" aria-label="User Management"></ul>
+            </section>
+        </main>
+    </div>
+    <dialog class="module-dialog" id="module-editor" aria-labelledby="module-editor-title">
+        <form id="module-form" method="dialog">
+            <h2 id="module-editor-title"></h2>
+            <div class="module-fields" id="module-fields"></div>
+            <p class="module-error" id="module-error" role="alert"></p>
+            <div class="module-actions">
+                <button type="button" class="module-button module-secondary" id="module-cancel-edit">Cancel</button>
+                <button type="submit" class="button module-button">Save</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog class="module-dialog" id="module-confirmation" aria-labelledby="module-confirmation-title"
+            aria-describedby="module-confirmation-description">
+        <h2 id="module-confirmation-title"></h2>
+        <p id="module-confirmation-description"></p>
+        <div class="module-actions">
+            <button type="button" class="module-button module-secondary" id="module-cancel-confirmation" autofocus>Cancel</button>
+            <button type="button" class="module-button module-danger" id="module-confirm-action"></button>
+        </div>
+    </dialog>
+</body>
+</html>

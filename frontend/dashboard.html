@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Preview the CarePoint Hospital staff dashboard with fictional data.">
+    <title>Staff Dashboard | CarePoint Hospital</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/staff.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <script src="assets/js/staff.js" defer></script>
+    <script src="assets/js/staff-data.js" defer></script>
+    <script src="assets/js/dashboard.js" defer></script>
+</head>
+<body class="staff-page">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="staff-shell staff-header">
+            <a class="brand" href="index.html">
+                <span class="brand-mark" aria-hidden="true">+</span>
+                <span>CarePoint Hospital</span>
+            </a>
+            <a class="staff-public-link" href="index.html"><span aria-hidden="true">←</span> Back to public site</a>
+        </div>
+    </header>
+
+    <div class="staff-shell staff-layout">
+        <aside class="staff-sidebar">
+            <button class="staff-menu-toggle" id="staff-menu-toggle" type="button"
+                    aria-expanded="false" aria-controls="staff-nav" hidden>Staff menu</button>
+            <nav class="staff-nav" id="staff-nav" aria-label="Staff preview">
+                <p class="staff-nav-title">Staff workspace</p>
+                <a href="#main-content" aria-current="page">Dashboard</a>
+                <a href="#appointments">Sample schedule</a>
+            </nav>
+        </aside>
+
+        <main class="staff-main dashboard" id="main-content" tabindex="-1">
+            <div class="dashboard-heading">
+                <div>
+                    <p class="eyebrow">Staff dashboard preview</p>
+                    <h1 id="dashboard-title">Hospital overview</h1>
+                    <p class="dashboard-description" id="dashboard-description">
+                        Review hospital activity and the day's appointment schedule.
+                    </p>
+                </div>
+                <div class="staff-field" id="role-field" hidden>
+                    <label for="preview-role">Preview role</label>
+                    <select id="preview-role" aria-describedby="preview-note">
+                        <option value="administrator" selected>Administrator</option>
+                        <option value="receptionist">Receptionist</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="dashboard-note dashboard-preview-bar">
+                <p id="preview-note">Fictional data for interface testing. The role selector changes the view only.</p>
+                <button type="button" class="staff-menu-toggle" id="dashboard-reset" hidden>Reset sample data</button>
+            </div>
+            <p id="dashboard-reset-feedback" class="dashboard-description" role="status"></p>
+            <noscript><p class="dashboard-note">Enable JavaScript to view the sample schedule and switch roles.</p></noscript>
+
+            <dl class="dashboard-metrics" id="dashboard-metrics" aria-label="Schedule and hospital totals" hidden></dl>
+
+            <div class="dashboard-grid">
+                <section class="staff-card" id="appointments" aria-labelledby="appointments-title" tabindex="-1">
+                    <div class="dashboard-panel-heading">
+                        <div>
+                            <h2 id="appointments-title">Sample appointments</h2>
+                            <p><time datetime="2026-11-18">Wednesday, November 18, 2026</time></p>
+                        </div>
+                        <div class="staff-field" id="status-field" hidden>
+                            <label for="appointment-status">Status</label>
+                            <select id="appointment-status">
+                                <option value="">All statuses</option>
+                                <option>Scheduled</option>
+                                <option>Completed</option>
+                                <option>Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="appointment-count" id="appointment-count" role="status" aria-atomic="true"></p>
+                    <ul class="appointment-list" id="appointment-list" role="list"
+                        aria-label="Sample appointments by time"></ul>
+                </section>
+
+                <div class="dashboard-side">
+                    <section class="staff-card staff-tools" id="staff-tools" aria-labelledby="staff-tools-title" tabindex="-1">
+                        <h2 id="staff-tools-title">Staff tools</h2>
+                        <ul class="staff-tool-list" id="staff-tool-list" role="list"></ul>
+                    </section>
+                    <section class="staff-card" aria-labelledby="weather-title" id="weather-preview" hidden>
+                        <h2 id="weather-title">Bethlehem weather</h2>
+                        <p class="dashboard-description weather-caption">Sample weather for the dashboard preview.</p>
+                        <div class="staff-field weather-field">
+                            <label for="weather-state">Widget preview</label>
+                            <select id="weather-state">
+                                <option value="ready">Sample forecast</option>
+                                <option value="loading">Loading</option>
+                                <option value="error">Unavailable</option>
+                            </select>
+                        </div>
+                        <p id="weather-status" role="status" aria-atomic="true"></p>
+                        <button type="button" class="staff-menu-toggle" id="weather-retry" hidden>Retry preview</button>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

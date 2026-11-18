@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Preview the CarePoint Hospital staff sign-in form.">
+    <title>Staff Login | CarePoint Hospital</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/login.css">
+    <script src="assets/js/login.js" defer></script>
+</head>
+<body class="login-page">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="index.html">
+                <span class="brand-mark" aria-hidden="true">+</span>
+                <span>CarePoint Hospital</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="login-main" id="main-content" tabindex="-1">
+        <section class="login-card" aria-labelledby="login-title">
+            <p class="eyebrow">Frontend preview</p>
+            <h1 id="login-title">Staff Login</h1>
+            <p class="login-intro" id="login-intro">
+                Use a fictional username and password to test the form. Staff sign-in is unavailable in this preview.
+            </p>
+
+            <form class="login-form" id="login-form" aria-describedby="login-intro"
+                  autocomplete="off" novalidate>
+                <fieldset class="login-fields" id="login-fields" disabled>
+                    <div class="login-field">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" required autocapitalize="none"
+                               spellcheck="false" aria-describedby="username-error">
+                        <p class="login-error" id="username-error"></p>
+                    </div>
+
+                    <div class="login-field">
+                        <label for="login-password">Password</label>
+                        <div class="password-controls">
+                            <input type="password" id="login-password" required
+                                   aria-describedby="password-error">
+                            <button class="password-toggle" id="password-toggle" type="button">
+                                Show password
+                            </button>
+                        </div>
+                        <p class="login-error" id="password-error"></p>
+                    </div>
+
+                    <button class="button login-submit" type="submit">Check sample input</button>
+                </fieldset>
+                <p class="login-status" id="login-status" role="status" aria-atomic="true"></p>
+            </form>
+
+            <noscript><p class="login-noscript">Enable JavaScript to try the form.</p></noscript>
+            <a class="login-back" href="index.html"><span aria-hidden="true">←</span> Back to homepage</a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <strong>CarePoint Hospital</strong>
+            <span>SWER353 Web Technologies course project</span>
+        </div>
+    </footer>
+</body>
+</html>
