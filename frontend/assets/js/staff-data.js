@@ -61,10 +61,35 @@ function loadStaffData() {
     return structuredClone(staffSeed);
 }
 
-const staffData = loadStaffData();
-const previewDoctorId = 1;
+const staffData = staffSession ? {
+    departments: [], doctors: [], patients: [], appointments: [], records: [], users: [],
+    ...staffSession.data
+} : loadStaffData();
+const previewDoctorId = staffSession ? staffSession.user.doctorId : 1;
+if (staffSession) delete staffSession.data;
 const sampleScheduleDate = "2026-11-18";
 const appointmentStatuses = ["Scheduled", "Completed", "Cancelled"];
+
+async function staffRequest(module, { filters = {}, action, id, data } = {}) {
+    const query = new URLSearchParams({ module, ...filters });
+    const options = action ? {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-CSRF-Token": staffSession.csrfToken },
+        body: JSON.stringify({ action, id, data })
+    } : {};
+    const response = await fetch(`../backend/api/staff.php?${query}`, options);
+    if (response.status === 401) location.replace("login.html");
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || "The request could not be completed.");
+    return result;
+}
+
+async function refreshStaffData(module) {
+    const { data } = await staffRequest(module);
+    for (const [collection, rows] of Object.entries(data)) {
+        staffData[collection].splice(0, staffData[collection].length, ...rows);
+    }
+}
 
 function saveStaffData() {
     try {

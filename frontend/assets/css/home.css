@@ -1,24 +1,30 @@
-/* Homepage layout and pointer glow */
+/* Homepage layout and interactive dot grid */
 .hero {
     position: relative;
     overflow: hidden;
 }
 
-.hero::before {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-        circle 270px at var(--pointer-x, 70%) var(--pointer-y, 50%),
-        rgb(13 148 136 / 22%),
-        transparent
-    );
-    opacity: 0;
-    pointer-events: none;
-    content: "";
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(circle, rgb(159 44 63 / 68%) 1.8px, transparent 2.5px);
+        background-size: 22px 22px;
+        mask-image: radial-gradient(circle 155px at var(--pointer-x, 50%) var(--pointer-y, 50%), black, transparent);
+        opacity: 0;
+        transition: opacity 160ms ease;
+    }
+
+    .hero-pointer-active::after {
+        opacity: 1;
+    }
 }
 
 .hero-inner {
     position: relative;
+    z-index: 1;
     animation: hero-enter 450ms ease-out both;
 }
 
@@ -139,16 +145,6 @@
     }
 }
 
-@media (hover: hover) and (pointer: fine) {
-    .hero::before {
-        transition: opacity 220ms ease;
-    }
-
-    .hero:hover::before {
-        opacity: 1;
-    }
-}
-
 @media (prefers-reduced-motion: no-preference) {
     html {
         scroll-behavior: smooth;
@@ -164,10 +160,6 @@
 @media (prefers-reduced-motion: reduce) {
     .hero-inner {
         animation: none;
-    }
-
-    .hero::before {
-        display: none;
     }
 
     .browse-button,

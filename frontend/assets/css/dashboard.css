@@ -33,7 +33,7 @@
     font-size: 0.9rem;
 }
 
-.dashboard-preview-bar {
+.dashboard-preview-bar:not([hidden]) {
     display: flex;
     flex-wrap: wrap;
     align-items: center;

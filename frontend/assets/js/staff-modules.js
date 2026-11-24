@@ -20,6 +20,9 @@ let filterFields = [];
 let editFields = [];
 let editingRow;
 let confirmAction;
+let passwordReset = false;
+let moduleBusy = false;
+let searchVersion = 0;
 
 function element(tag, text = "", className = "") {
     const node = document.createElement(tag);
@@ -49,6 +52,10 @@ function makeModuleField(field, prefix, value = "", isFilter = false) {
     } else {
         control = document.createElement("input");
         control.type = field.type;
+        if (field.type === "password") {
+            control.autocomplete = "new-password";
+            control.minLength = 12;
+        }
         if (field.maxLength) control.maxLength = field.maxLength;
         if (field.max) control.max = field.max;
     }
@@ -133,8 +140,23 @@ function buildModuleCard(row) {
     return card;
 }
 
-function renderModuleRows() {
-    const visible = moduleRows.filter((row) => isVisibleToRole(row) && matchesModuleFilters(row));
+async function renderModuleRows() {
+    const version = ++searchVersion;
+    let visible;
+    if (staffSession && filterFields.some(({ control }) => control.value)) {
+        const filters = Object.fromEntries(filterFields.map(({ key, control }) => [key, control.value]));
+        try {
+            const { ids } = await staffRequest(currentModule, { filters });
+            if (version !== searchVersion) return;
+            const matches = new Set(ids);
+            visible = moduleRows.filter((row) => matches.has(row.id));
+        } catch (error) {
+            if (version === searchVersion) moduleResults.textContent = error.message;
+            return;
+        }
+    } else {
+        visible = moduleRows.filter((row) => (staffSession || isVisibleToRole(row)) && matchesModuleFilters(row));
+    }
     if (currentModule === "appointments") visible.sort((first, second) => first.dateTime.localeCompare(second.dateTime));
     moduleList.replaceChildren(...visible.map(buildModuleCard));
     moduleResults.dataset.empty = String(visible.length === 0);
@@ -175,9 +197,14 @@ function openModuleEditor(row) {
     }
 
     editingRow = row;
+    passwordReset = false;
     document.querySelector("#module-editor-title").textContent = row ? `Edit ${moduleConfig.singular}` : moduleConfig.add;
     moduleError.textContent = "";
-    editFields = moduleConfig.fields(row, moduleRole.value).map((field) =>
+    const fields = moduleConfig.fields(row, moduleRole.value);
+    if (staffSession && moduleConfig.accountActions && !row) {
+        fields.push(textField("password", "Initial password", 72, true, "password"));
+    }
+    editFields = fields.map((field) =>
         makeModuleField(field, "edit", row?.[field.key] ?? field.default ?? ""));
     moduleFields.replaceChildren(...editFields.map(({ wrapper }) => wrapper));
     syncDoctorField();
@@ -191,20 +218,55 @@ function showModuleFeedback(message, row) {
     destination?.focus();
 }
 
-moduleForm.addEventListener("submit", (event) => {
+async function saveLiveModule(action, id, data) {
+    if (moduleBusy) return;
+    moduleBusy = true;
+    const submit = moduleForm.querySelector('[type="submit"]');
+    submit.disabled = true;
+    moduleAdd.disabled = true;
+    const errorTarget = moduleEditor.open ? moduleError : moduleFeedback;
+    let saved = false;
+    try {
+        await staffRequest(currentModule, { action, id, data });
+        saved = true;
+        if (moduleEditor.open) moduleEditor.close();
+        await refreshStaffData(currentModule);
+        renderModuleFilters(true);
+        await renderModuleRows();
+        moduleFeedback.textContent = action === "password" ? "Password updated." : "Changes saved.";
+    } catch (error) {
+        if (saved) {
+            moduleFeedback.textContent = "Changes saved. Reload the page to see the latest data.";
+        } else {
+            errorTarget.textContent = error.message;
+        }
+    } finally {
+        moduleBusy = false;
+        submit.disabled = false;
+        moduleAdd.disabled = false;
+    }
+}
+
+moduleForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!moduleConfig.edit.includes(moduleRole.value)) return;
 
     const record = {};
     for (const { key, control, options, doctorOnly } of editFields) {
         if (doctorOnly && control.disabled) continue;
-        const value = control.value.trim();
+        const value = control.type === "password" ? control.value : control.value.trim();
         if (control.required && !value) {
             moduleError.textContent = `Enter a value for ${control.labels[0].textContent.toLowerCase()}.`;
             control.focus();
             return;
         }
         record[key] = value && Array.isArray(options?.[0]) ? Number(value) : value;
+    }
+
+    if (staffSession) {
+        const action = passwordReset ? "password" : editingRow ? "update" : "create";
+        await saveLiveModule(action, editingRow?.id, record);
+        return;
     }
 
     const error = moduleConfig.validate?.(record, editingRow);
@@ -247,7 +309,8 @@ function openModuleDeletion(row) {
     }
 
     const title = moduleConfig.title(row);
-    openModuleConfirmation(`Delete ${moduleConfig.singular}`, `Delete ${title} from this preview?`, "Delete", () => {
+    openModuleConfirmation(`Delete ${moduleConfig.singular}`, `Delete ${title}?`, "Delete", () => {
+        if (staffSession) return saveLiveModule("delete", row.id);
         moduleRows.splice(moduleRows.indexOf(row), 1);
         saveStaffData();
         renderModuleFilters(true);
@@ -258,7 +321,8 @@ function openModuleDeletion(row) {
 
 function openAccountStatus(row) {
     const action = row.active ? "Deactivate" : "Activate";
-    openModuleConfirmation(`${action} account`, `${action} ${row.username} in this preview?`, action, () => {
+    openModuleConfirmation(`${action} account`, `${action} ${row.username}?`, action, () => {
+        if (staffSession) return saveLiveModule("active", row.id, { active: !row.active });
         row.active = !row.active;
         saveStaffData();
         renderModuleRows();
@@ -267,6 +331,17 @@ function openAccountStatus(row) {
 }
 
 function openPasswordReset(row) {
+    if (staffSession) {
+        editingRow = row;
+        passwordReset = true;
+        document.querySelector("#module-editor-title").textContent = `Reset password for ${row.username}`;
+        moduleError.textContent = "";
+        editFields = [makeModuleField(textField("password", "New password", 72, true, "password"), "edit")];
+        moduleFields.replaceChildren(editFields[0].wrapper);
+        moduleEditor.showModal();
+        editFields[0].control.focus();
+        return;
+    }
     openModuleConfirmation("Preview password reset", `Preview the reset confirmation for ${row.username}. This demo uses no passwords.`,
         "Confirm preview", () => showModuleFeedback(`Password reset preview completed for ${row.username}.`, row));
 }
@@ -291,11 +366,14 @@ document.querySelector("#module-clear").addEventListener("click", () => {
 });
 moduleAdd.textContent = moduleConfig.add;
 moduleAdd.addEventListener("click", () => openModuleEditor());
-moduleRole.value = getStaffPreviewRole();
+moduleRole.value = staffSession ? staffSession.user.role.toLowerCase() : getStaffPreviewRole();
 moduleRole.addEventListener("change", displayModuleRole);
 displayModuleRole();
-document.querySelector("#module-role-field").hidden = false;
-if (!staffStorageAvailable) {
+document.querySelector("#module-role-field").hidden = Boolean(staffSession);
+if (staffSession) {
+    document.querySelector(".module-intro .eyebrow").textContent = staffSession.user.role;
+    document.querySelector("#module-preview-note").hidden = true;
+} else if (!staffStorageAvailable) {
     document.querySelector("#module-preview-note").textContent = "Use fictional information. This browser keeps sample edits on this page only.";
 }
 

@@ -39,7 +39,7 @@ const staffModules = {
         collection: "doctors", singular: "doctor", plural: "doctors", add: "Add doctor",
         view: deskRoles, edit: adminRole, remove: adminRole,
         title: (row) => doctorName(row.id), subtitle: (row) => row.specialty,
-        search: (row) => [personName(row)], searchLabel: "Doctor name or ID",
+        search: (row) => [doctorName(row.id)], searchLabel: "Doctor name or ID",
         filters: () => [
             selectField("specialty", "Specialty", [...new Set(staffData.doctors.map((row) => row.specialty))].sort()),
             selectField("departmentId", "Department", referenceOptions("departments", (row) => row.name))
@@ -86,7 +86,7 @@ const staffModules = {
         ],
         details: (row) => [["Visit", formatStaffVisit(row.dateTime)], ["Reason", row.reason]],
         fields: (original) => {
-            const linkedRecord = original && staffData.records.some((row) => row.appointmentId === original.id);
+            const linkedRecord = original && (original.hasRecord || staffData.records.some((row) => row.appointmentId === original.id));
             return [
                 { ...selectField("patientId", "Patient", referenceOptions("patients", personName)), disabled: linkedRecord },
                 { ...selectField("doctorId", "Doctor", referenceOptions("doctors", (row) => doctorName(row.id))), disabled: linkedRecord },
@@ -95,7 +95,7 @@ const staffModules = {
                 textField("reason", "Visit reason", 255)
             ];
         },
-        deleteBlock: (row) => staffData.records.some((record) => record.appointmentId === row.id) ? "This appointment has a medical record." : ""
+        deleteBlock: (row) => row.hasRecord || staffData.records.some((record) => record.appointmentId === row.id) ? "This appointment has a medical record." : ""
     },
     "medical-records": {
         collection: "records", singular: "medical record", plural: "medical records", add: "Add medical record",

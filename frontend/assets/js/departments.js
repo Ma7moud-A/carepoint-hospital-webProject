@@ -25,6 +25,7 @@ function canManageDepartments() {
 }
 
 function assignedDoctorCount(department) {
+    if (staffSession) return department.doctorCount;
     return staffData.doctors.filter((doctor) => doctor.departmentId === department.id).length;
 }
 
@@ -33,9 +34,26 @@ function matchesDepartment(department, query) {
         .some((value) => value.toLowerCase().includes(query));
 }
 
-function renderDepartments() {
+let departmentSearchVersion = 0;
+let departmentBusy = false;
+
+async function renderDepartments() {
+    const version = ++departmentSearchVersion;
     const query = search.value.trim().toLowerCase();
-    const visible = departments.filter((department) => matchesDepartment(department, query));
+    let visible = departments;
+    if (staffSession && query) {
+        try {
+            const { ids } = await staffRequest("departments", { filters: { search: query } });
+            if (version !== departmentSearchVersion) return;
+            const matching = new Set(ids);
+            visible = departments.filter(({ id }) => matching.has(id));
+        } catch (error) {
+            if (version === departmentSearchVersion) results.textContent = error.message;
+            return;
+        }
+    } else if (!staffSession) {
+        visible = departments.filter((department) => matchesDepartment(department, query));
+    }
     const canManage = canManageDepartments();
     list.replaceChildren();
     addButton.hidden = !canManage;
@@ -113,6 +131,35 @@ function openDeletion(department) {
     deletion.showModal();
 }
 
+async function saveLiveDepartment(action, id, data) {
+    if (departmentBusy) return;
+    departmentBusy = true;
+    const submit = form.querySelector('[type="submit"]');
+    submit.disabled = true;
+    confirmDelete.disabled = true;
+    let saved = false;
+    try {
+        await staffRequest("departments", { action, id, data });
+        saved = true;
+        if (editor.open) editor.close();
+        if (deletion.open) deletion.close();
+        await refreshStaffData("departments");
+        await renderDepartments();
+        feedback.textContent = action === "delete" ? "Department deleted." : "Department saved.";
+    } catch (error) {
+        if (saved) feedback.textContent = "Changes saved. Reload the page to see the latest data.";
+        else if (editor.open) setNameError(error.message);
+        else {
+            if (deletion.open) deletion.close();
+            feedback.textContent = error.message;
+        }
+    } finally {
+        departmentBusy = false;
+        submit.disabled = false;
+        confirmDelete.disabled = false;
+    }
+}
+
 form.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -124,6 +171,12 @@ form.addEventListener("submit", (event) => {
 
     if (!name) {
         setNameError("Enter a department name.");
+        return;
+    }
+
+    if (staffSession) {
+        saveLiveDepartment(editingDepartment ? "update" : "create", editingDepartment?.id,
+            { name, location: locationInput.value.trim(), phone: phoneInput.value.trim() });
         return;
     }
 
@@ -161,6 +214,10 @@ confirmDelete.addEventListener("click", () => {
         return;
     }
 
+    if (staffSession) {
+        saveLiveDepartment("delete", deletingDepartment.id);
+        return;
+    }
     departments.splice(departments.indexOf(deletingDepartment), 1);
     saveStaffData();
     deletion.close();
@@ -193,10 +250,13 @@ function updateDepartmentRole() {
     renderDepartments();
 }
 
-departmentRole.value = getStaffPreviewRole();
+departmentRole.value = staffSession ? staffSession.user.role.toLowerCase() : getStaffPreviewRole();
 departmentRole.addEventListener("change", updateDepartmentRole);
 updateDepartmentRole();
-document.querySelector("#department-role-field").hidden = false;
-if (!staffStorageAvailable) {
+document.querySelector("#department-role-field").hidden = Boolean(staffSession);
+if (staffSession) {
+    document.querySelector(".staff-main .eyebrow").textContent = staffSession.user.role;
+    document.querySelector("#department-preview-note").hidden = true;
+} else if (!staffStorageAvailable) {
     document.querySelector("#department-preview-note").textContent = "Fictional data. This browser keeps sample edits on this page only.";
 }

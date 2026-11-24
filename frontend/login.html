@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Preview the CarePoint Hospital staff sign-in form.">
+    <meta name="description" content="Sign in to CarePoint Hospital staff services.">
     <title>Staff Login | CarePoint Hospital</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/login.css">
@@ -23,40 +23,49 @@
 
     <main class="login-main" id="main-content" tabindex="-1">
         <section class="login-card" aria-labelledby="login-title">
-            <p class="eyebrow">Frontend preview</p>
+            <p class="eyebrow">Staff access</p>
             <h1 id="login-title">Staff Login</h1>
             <p class="login-intro" id="login-intro">
-                Use a fictional username and password to test the form. Staff sign-in is unavailable in this preview.
+                Sign in with your staff account.
             </p>
 
             <form class="login-form" id="login-form" aria-describedby="login-intro"
-                  autocomplete="off" novalidate>
+                  method="post" novalidate>
                 <fieldset class="login-fields" id="login-fields" disabled>
                     <div class="login-field">
                         <label for="login-username">Username</label>
-                        <input type="text" id="login-username" required autocapitalize="none"
+                        <input type="text" id="login-username" name="username" autocomplete="username" maxlength="50" required autocapitalize="none"
                                spellcheck="false" aria-describedby="username-error">
                         <p class="login-error" id="username-error"></p>
                     </div>
 
                     <div class="login-field">
                         <label for="login-password">Password</label>
-                        <div class="password-controls">
-                            <input type="password" id="login-password" required
+                        <div class="login-password-control">
+                            <input type="password" id="login-password" name="password" autocomplete="current-password" maxlength="1024" required
                                    aria-describedby="password-error">
-                            <button class="password-toggle" id="password-toggle" type="button">
-                                Show password
+                            <button type="button" id="login-password-toggle" aria-label="Show password"
+                                    aria-controls="login-password" aria-pressed="false" hidden>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/>
+                                    <circle cx="12" cy="12" r="2.5"/>
+                                    <path class="login-eye-slash" d="m4 4 16 16"/>
+                                </svg>
                             </button>
                         </div>
                         <p class="login-error" id="password-error"></p>
                     </div>
 
-                    <button class="button login-submit" type="submit">Check sample input</button>
+                    <button class="button login-submit" id="login-submit" type="submit" disabled>Sign in</button>
                 </fieldset>
                 <p class="login-status" id="login-status" role="status" aria-atomic="true"></p>
             </form>
 
-            <noscript><p class="login-noscript">Enable JavaScript to try the form.</p></noscript>
+            <button class="login-retry" id="retry-button" type="button" hidden>Retry connection</button>
+            <a class="login-back" id="local-login-link" href="http://127.0.0.1:8080/frontend/login.html" hidden>Open local staff login</a>
+
+            <noscript><p class="login-noscript">Enable JavaScript to sign in.</p></noscript>
             <a class="login-back" href="index.html"><span aria-hidden="true">←</span> Back to homepage</a>
         </section>
     </main>

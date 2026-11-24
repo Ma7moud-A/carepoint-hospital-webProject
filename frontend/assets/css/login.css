@@ -53,21 +53,15 @@
     font-weight: bold;
 }
 
-.password-controls {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 10px;
-}
-
 .login-field input,
-.password-toggle,
+.login-retry,
 .login-submit {
     min-height: 44px;
     font: inherit;
 }
 
 .login-field input,
-.password-toggle {
+.login-retry {
     padding: 8px 10px;
     border: 1px solid #8999aa;
     border-radius: var(--control-radius);
@@ -84,13 +78,48 @@
     border-color: #a52626;
 }
 
-.password-toggle,
+.login-password-control {
+    position: relative;
+}
+
+.login-password-control input {
+    padding-inline-end: 48px;
+}
+
+#login-password::-ms-reveal {
+    display: none;
+}
+
+#login-password-toggle {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: 1px;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 42px;
+    border: 0;
+    border-radius: var(--control-radius);
+    background: transparent;
+    color: var(--teal-dark);
+    cursor: pointer;
+}
+
+#login-password-toggle:not([hidden]) {
+    display: grid;
+    place-items: center;
+}
+
+#login-password-toggle[aria-pressed="false"] .login-eye-slash {
+    display: none;
+}
+
+.login-retry,
 .login-submit {
     font-weight: bold;
     cursor: pointer;
 }
 
-.password-toggle {
+.login-retry {
     color: var(--teal-dark);
 }
 
@@ -98,7 +127,7 @@
     border: 0;
 }
 
-.password-toggle:disabled,
+.login-retry:disabled,
 .login-submit:disabled {
     opacity: 0.6;
     cursor: default;
@@ -121,6 +150,10 @@
     background: var(--teal-light);
 }
 
+.login-page [hidden] {
+    display: none;
+}
+
 .login-back {
     display: inline-flex;
     align-items: center;
@@ -133,7 +166,7 @@
 }
 
 @media (hover: hover) {
-    .password-toggle:enabled:hover {
+    .login-retry:enabled:hover {
         background: var(--teal-light);
     }
 
@@ -142,7 +175,7 @@
     }
 }
 
-.password-toggle:enabled:active {
+.login-retry:enabled:active {
     background: var(--teal-light);
     box-shadow: inset 0 0 0 1px var(--teal-dark);
 }
@@ -152,18 +185,8 @@
     box-shadow: inset 0 0 0 2px var(--teal-dark);
 }
 
-@media (max-width: 360px) {
-    .password-controls {
-        grid-template-columns: 1fr;
-    }
-
-    .password-toggle {
-        justify-self: start;
-    }
-}
-
 @media (prefers-reduced-motion: no-preference) {
-    .password-toggle,
+    .login-retry,
     .login-submit,
     .login-back {
         transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;

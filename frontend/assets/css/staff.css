@@ -75,6 +75,7 @@
 }
 
 .staff-menu-toggle,
+.staff-field input[type="date"],
 .staff-field select {
     min-height: 44px;
     padding: 8px 12px;

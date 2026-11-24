@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/staff.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    <!-- Staff session -->
     <script src="assets/js/staff.js" defer></script>
     <script src="assets/js/staff-data.js" defer></script>
     <script src="assets/js/dashboard.js" defer></script>
@@ -39,12 +40,13 @@
         <main class="staff-main dashboard" id="main-content" tabindex="-1">
             <div class="dashboard-heading">
                 <div>
-                    <p class="eyebrow">Staff dashboard preview</p>
+                    <p class="eyebrow" id="dashboard-eyebrow">Staff dashboard preview</p>
                     <h1 id="dashboard-title">Hospital overview</h1>
                     <p class="dashboard-description" id="dashboard-description">
                         Review hospital activity and the day's appointment schedule.
                     </p>
                 </div>
+                <button type="button" class="staff-menu-toggle" id="dashboard-logout" hidden>Sign out</button>
                 <div class="staff-field" id="role-field" hidden>
                     <label for="preview-role">Preview role</label>
                     <select id="preview-role" aria-describedby="preview-note">
@@ -70,6 +72,10 @@
                         <div>
                             <h2 id="appointments-title">Sample appointments</h2>
                             <p><time datetime="2026-11-18">Wednesday, November 18, 2026</time></p>
+                            <div class="staff-field" id="dashboard-date-field" hidden>
+                                <label for="dashboard-date">Schedule date</label>
+                                <input type="date" id="dashboard-date">
+                            </div>
                         </div>
                         <div class="staff-field" id="status-field" hidden>
                             <label for="appointment-status">Status</label>

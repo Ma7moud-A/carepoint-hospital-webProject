@@ -1,6 +1,9 @@
 const staffMenuToggle = document.querySelector("#staff-menu-toggle");
 const staffNav = document.querySelector("#staff-nav");
 const staffMobileLayout = window.matchMedia("(max-width: 760px)");
+const staffSessionElement = document.querySelector("#staff-session");
+const staffSession = staffSessionElement ? JSON.parse(staffSessionElement.textContent) : null;
+if (staffSession) staffNav.setAttribute("aria-label", "Staff navigation");
 
 const staffPages = [
     { id: "departments", label: "Departments", roles: ["administrator", "receptionist"] },
@@ -11,13 +14,13 @@ const staffPages = [
     { id: "users", label: "User Management", roles: ["administrator"] }
 ];
 
-function getStaffPreviewRole(allowed = ["administrator", "receptionist", "doctor"]) {
+function getStaffPreviewRole() {
     const requested = new URLSearchParams(location.search).get("role");
-    return allowed.includes(requested) ? requested : "administrator";
+    return ["administrator", "receptionist", "doctor"].includes(requested) ? requested : "administrator";
 }
 
 function staffPageUrl(page, role) {
-    return `${page}.html?role=${role}`;
+    return staffSession ? `${page}.php` : `${page}.html?role=${role}`;
 }
 
 function updateStaffNavigation(role, currentPage) {
