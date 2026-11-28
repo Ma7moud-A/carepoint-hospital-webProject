@@ -1,20 +1,87 @@
-const hero = document.querySelector(".hero");
-const pointerMotion = window.matchMedia(
+const welcomeHero = document.querySelector(".hero");
+const hoverMotion = window.matchMedia(
     "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)"
 );
 
-hero.addEventListener("pointermove", (event) => {
-    if (!pointerMotion.matches || event.pointerType !== "mouse") return;
+welcomeHero.addEventListener("pointermove", (event) => {
+    if (event.pointerType !== "mouse" || !hoverMotion.matches) return;
 
-    const bounds = hero.getBoundingClientRect();
-    hero.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
-    hero.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
-    hero.classList.add("hero-pointer-active");
+    const bounds = welcomeHero.getBoundingClientRect();
+    welcomeHero.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
+    welcomeHero.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
+    welcomeHero.classList.add("is-pointer-active");
 });
 
-hero.addEventListener("pointerleave", () => {
-    hero.classList.remove("hero-pointer-active");
-});
+function clearPointerShade() {
+    welcomeHero.classList.remove("is-pointer-active");
+}
+
+welcomeHero.addEventListener("pointerleave", clearPointerShade);
+welcomeHero.addEventListener("pointercancel", clearPointerShade);
+hoverMotion.addEventListener("change", clearPointerShade);
+
+const teamScene = document.querySelector(".team-scene");
+const sceneFrame = teamScene.querySelector(".scene-frame");
+const frameRoute = sceneFrame.querySelector("#scene-frame-route");
+const frameSignal = sceneFrame.querySelector(".scene-frame-signal");
+const frameArrow = sceneFrame.querySelector(".scene-frame-arrow");
+const frameMotion = window.matchMedia("(prefers-reduced-motion: no-preference)");
+const lapDuration = 4800;
+let routeLength;
+let frameRequest;
+
+function fitSceneFrame() {
+    const { width, height } = teamScene.getBoundingClientRect();
+    const inset = 2;
+    const right = width - inset;
+    const bottom = height - inset;
+    const radius = parseFloat(getComputedStyle(teamScene).borderTopLeftRadius) - inset;
+    const near = inset + radius;
+    const far = right - radius;
+    const low = bottom - radius;
+    const pulse = Math.round(width * 0.25);
+    const heart = Math.round(width * 0.76);
+
+    sceneFrame.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    frameRoute.setAttribute("d", [
+        `M${near} ${inset} H${pulse}`,
+        "l8 -6 8 4 12 -20 13 20 10 2",
+        `H${heart - 5} c-3 -5 -12 -12 -12 -20 c0 -9 10 -12 17 -5 c7 -7 17 -4 17 5 c0 8 -9 15 -12 20`,
+        `H${far} Q${right} ${inset} ${right} ${near}`,
+        `V${low} Q${right} ${bottom} ${far} ${bottom}`,
+        `H${near} Q${inset} ${bottom} ${inset} ${low}`,
+        `V${near} Q${inset} ${inset} ${near} ${inset} Z`
+    ].join(" "));
+    routeLength = frameRoute.getTotalLength();
+}
+
+function moveFrameSignal(time) {
+    const progress = (time % lapDuration) / lapDuration;
+    const distance = progress * routeLength;
+    const tip = frameRoute.getPointAtLength(distance);
+    const tail = frameRoute.getPointAtLength((distance + routeLength - 2) % routeLength);
+    const angle = Math.atan2(tip.y - tail.y, tip.x - tail.x) * 180 / Math.PI;
+
+    // The arrow tip and the end of the trail share the same point on the route.
+    frameSignal.style.strokeDashoffset = 12 - progress * 100;
+    frameArrow.setAttribute("transform", `translate(${tip.x} ${tip.y}) rotate(${angle})`);
+    frameRequest = requestAnimationFrame(moveFrameSignal);
+}
+
+function updateFrameMotion() {
+    cancelAnimationFrame(frameRequest);
+    sceneFrame.classList.toggle("is-running", frameMotion.matches);
+    if (frameMotion.matches) {
+        moveFrameSignal(performance.now());
+    } else {
+        frameSignal.style.removeProperty("stroke-dashoffset");
+    }
+}
+
+fitSceneFrame();
+new ResizeObserver(fitSceneFrame).observe(teamScene);
+updateFrameMotion();
+frameMotion.addEventListener("change", updateFrameMotion);
 
 const controls = document.querySelector("#directory-controls");
 const searchInput = document.querySelector("#doctor-search");

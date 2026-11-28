@@ -1,49 +1,337 @@
-/* Homepage layout and interactive dot grid */
-.hero {
-    position: relative;
-    overflow: hidden;
+/* Homepage welcome */
+.site-header {
+    border-bottom: 1px solid rgb(255 255 255 / 14%);
 }
 
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background-image: radial-gradient(circle, rgb(159 44 63 / 68%) 1.8px, transparent 2.5px);
-        background-size: 22px 22px;
-        mask-image: radial-gradient(circle 155px at var(--pointer-x, 50%) var(--pointer-y, 50%), black, transparent);
-        opacity: 0;
-        transition: opacity 160ms ease;
-    }
+.carepoint-monogram {
+    background: var(--teal-light);
+    color: var(--teal-dark);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
 
-    .hero-pointer-active::after {
-        opacity: 1;
-    }
+.hero {
+    --welcome-teal: #77e4d5;
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-items: center;
+    min-block-size: calc(100svh - 69px);
+    padding-block: clamp(32px, 6vw, 96px);
+    overflow: clip;
+    background: linear-gradient(130deg, var(--navy) 35%, #103e49);
+    color: var(--white);
 }
 
 .hero-inner {
-    position: relative;
-    z-index: 1;
-    animation: hero-enter 450ms ease-out both;
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 6fr);
+    align-items: center;
+    width: min(1376px, calc(100% - 64px));
+    gap: clamp(24px, 4vw, 64px);
 }
 
-@keyframes hero-enter {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
+.hero h1 {
+    margin: 0;
+    font-size: clamp(3.6rem, 6.4vw, 7rem);
+    letter-spacing: -0.065em;
+    line-height: 0.94;
+}
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.welcome-greeting {
+    display: block;
+    margin-bottom: 0.14em;
+    color: var(--welcome-teal);
+    font-size: 0.62em;
+    letter-spacing: -0.035em;
+}
+
+.hero-description {
+    max-width: 29ch;
+    margin: 22px 0 24px;
+    color: var(--background);
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
 }
 
 .browse-button {
     display: inline-flex;
+    min-height: 48px;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    border: 1px solid var(--welcome-teal);
+}
+
+.browse-button span {
+    color: var(--welcome-teal);
+}
+
+.browse-button:focus-visible {
+    outline-color: var(--white);
+}
+
+.team-scene {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: clamp(330px, 35vw, 500px);
+    padding: clamp(14px, 2.5vw, 36px);
+    border-radius: 28px;
+    background:
+        linear-gradient(rgb(119 228 213 / 7%) 1px, transparent 1px) center / 30px 30px,
+        linear-gradient(90deg, rgb(119 228 213 / 7%) 1px, transparent 1px) center / 30px 30px,
+        linear-gradient(145deg, rgb(16 38 63 / 36%), rgb(21 83 90 / 36%));
+}
+
+.scene-frame {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.scene-frame use {
+    fill: none;
+    stroke: var(--welcome-teal);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.scene-frame-track {
+    stroke-width: 1.5;
+    opacity: 0.48;
+}
+
+.scene-frame-signal {
+    stroke-width: 3;
+    stroke-dasharray: 12 88;
+    stroke-dashoffset: -5;
+}
+
+.scene-frame-arrow {
+    display: none;
+    fill: var(--welcome-teal);
+}
+
+.scene-frame.is-running .scene-frame-arrow {
+    display: block;
+}
+
+.workflow-track {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1.1fr) 28px minmax(0, 1fr);
+    align-items: center;
+    perspective: 820px;
+}
+
+.workflow-panel {
+    position: relative;
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    padding: clamp(12px, 1.4vw, 22px);
+    border: 1px solid #dce3eb;
+    border-radius: 16px;
+    background: var(--white);
+    color: var(--navy);
+    box-shadow: 0 22px 36px rgb(5 23 37 / 34%);
+}
+
+.reception-panel {
+    --arrival-x: -28%;
+    --arrival-y: -32%;
+    --arrival-angle: -12deg;
+    --arrival-delay: 0ms;
+}
+
+.doctor-panel {
+    --arrival-x: 0%;
+    --arrival-y: 31%;
+    --arrival-angle: 5deg;
+    --arrival-delay: 100ms;
+    z-index: 1;
+    border-color: var(--welcome-teal);
+    box-shadow: 0 0 0 3px rgb(119 228 213 / 18%), 0 25px 40px rgb(5 23 37 / 40%);
+}
+
+.records-panel {
+    --arrival-x: 28%;
+    --arrival-y: -18%;
+    --arrival-angle: 12deg;
+    --arrival-delay: 200ms;
+}
+
+.panel-icon {
+    width: 37px;
+    height: 37px;
+    padding: 7px;
+    border-radius: 9px;
+    background: var(--teal-light);
+    color: var(--teal-dark);
+}
+
+.panel-title {
+    font-size: clamp(0.95rem, 1.45vw, 1.25rem);
+    font-weight: bold;
+    line-height: 1.15;
+}
+
+.panel-detail {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: clamp(0.75rem, 1vw, 0.875rem);
+}
+
+.panel-art {
+    display: block;
+    width: 100%;
+}
+
+.workflow-link {
+    display: grid;
+    height: 2px;
+    place-items: center;
+    background: var(--welcome-teal);
+}
+
+.workflow-link span {
+    display: grid;
+    width: 19px;
+    height: 19px;
+    margin-top: -9px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--welcome-teal);
+    color: var(--navy);
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .team-scene .workflow-panel {
+        animation: align-workflow-panel 1450ms cubic-bezier(0.22, 0.68, 0.23, 1) var(--arrival-delay) both;
+    }
+
+    .team-scene .workflow-link {
+        animation: connect-workflow 360ms ease-out 1530ms both;
+    }
+
+    .team-scene .workflow-link-last {
+        animation-delay: 1710ms;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .hero::before {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        background:
+            radial-gradient(circle clamp(185px, 22vw, 340px) at var(--pointer-x, 50%) var(--pointer-y, 50%),
+                rgb(119 228 213 / 34%), rgb(13 148 136 / 21%) 36%, transparent 75%),
+            radial-gradient(circle clamp(150px, 17vw, 250px) at var(--pointer-x, 50%) var(--pointer-y, 50%),
+                transparent 54%, rgb(119 228 213 / 20%) 55%, transparent 57%);
+        content: "";
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 160ms ease;
+    }
+
+    .hero.is-pointer-active::before {
+        opacity: 1;
+    }
+
+    .hero:has(.team-scene:hover)::before {
+        opacity: 0;
+        transition: none;
+    }
+}
+
+@keyframes align-workflow-panel {
+    0%, 13% {
+        transform: translate(var(--arrival-x), var(--arrival-y))
+            rotate(var(--arrival-angle)) scale(0.87);
+    }
+
+    100% { transform: none; }
+}
+
+@keyframes connect-workflow {
+    from { opacity: 0; scale: 0.55; }
+    to { opacity: 1; scale: 1; }
+}
+
+@media (max-width: 1050px) {
+    .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
+        width: min(800px, calc(100% - 40px));
+        gap: 36px;
+    }
+
+}
+
+@media (max-width: 580px) {
+    .hero {
+        min-block-size: calc(100svh - 108px);
+        padding-block: 32px;
+    }
+
+    .hero-inner {
+        width: calc(100% - 32px);
+        gap: 32px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.35rem, 10.3vw, 3.6rem);
+    }
+
+    .hero-description {
+        margin-block: 14px 16px;
+    }
+
+    .team-scene {
+        min-height: 0;
+        padding: 14px;
+        border-radius: 20px;
+    }
+
+    .workflow-track {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .workflow-panel {
+        grid-template-columns: 29px minmax(0, 1fr) minmax(70px, 29%);
+        align-items: center;
+        gap: 8px;
+        min-height: 76px;
+        padding: 9px;
+    }
+
+    .panel-icon {
+        width: 29px;
+        height: 29px;
+        padding: 5px;
+    }
+
+    .reception-panel { --arrival-x: -13%; }
+    .doctor-panel { --arrival-y: 4%; }
+    .records-panel { --arrival-x: 13%; --arrival-y: 25%; }
+
+    .workflow-link {
+        width: 2px;
+        height: 24px;
+        margin-inline: auto;
+    }
+
+    .workflow-link span {
+        margin: 0 0 0 -8px;
+        rotate: 90deg;
+    }
 }
 
 .browse-button,
@@ -145,12 +433,6 @@
     }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    html {
-        scroll-behavior: smooth;
-    }
-}
-
 @media (max-width: 640px) {
     .directory-controls:not([hidden]) {
         grid-template-columns: 1fr;
@@ -158,10 +440,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .hero-inner {
-        animation: none;
-    }
-
     .browse-button,
     .reset-button,
     .doctor-card {

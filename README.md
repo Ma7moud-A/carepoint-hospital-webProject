@@ -22,7 +22,14 @@ and verification against the hosting database are pending.
 
 ## Main features
 
-- A public Our Doctors page that displays the hospital's doctors.
+- The homepage header uses a CP monogram. The welcome text explains how
+  visitors can browse the doctors directory, and the panels describe staff work.
+- A public welcome page with illustrated Reception, Doctor, and Medical Records
+  panels that connect on page load. A teal halo follows the mouse across the
+  navy hero outside the illustration frame. An ECG arrow circles the frame
+  and stays at the front of the signal as the layout resizes. The signal traces a heart
+  built into the border.
+  Reduced motion shows a static design.
 - Staff login and role-specific dashboards for administrators, receptionists,
   and doctors.
 - Management screens for departments, doctors, patients, appointments, and
